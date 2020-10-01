@@ -12,12 +12,25 @@ const actions = {
       .then(response => {
         commit("GOT_BOX", response.data);
       });
-  }
-
+  },
+  async fetchBoxTasks({ commit }, id) {
+    let config = {
+      headers: {
+        Accept: "application/json"
+      }
+    };
+    console.log(id);
+    await axios
+      .get(`http://127.0.0.1:8000/api/v1/task/?box=${id}`, config)
+      .then(response => {
+        commit("GOT_TASKS", response.data);
+      });
+  },
 };
 
 const mutations = {
   GOT_BOX: (state, data) => (state.box = data),
+  GOT_TASKS: (state, data) => (state.tasks = data)
 
 };
 
@@ -26,7 +39,8 @@ const getters = {
 };
 
 const state = {
-  box: {}
+  box: {},
+  tasks: []
 };
 
 export default {
